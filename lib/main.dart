@@ -1,6 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+
+import './utils/services/local_storage_service.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,32 +32,6 @@ class MyHomePage extends StatefulWidget {
 
   MyHomePage({this.title = ""});
 
-  Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
-    return directory.path.toString();
-  }
-
-  Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/chars.txt');
-  }
-
-  Future<File> writeChars(String chars) async {
-    final file = await _localFile;
-    return file.writeAsString(chars);
-  }
-
-  Future<String> readChars() async {
-    try {
-      final file = await _localFile;
-      String contents = await file.readAsString();
-
-      return contents;
-    } catch (e) {
-      return 'Error';
-    }
-  }
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -67,10 +41,10 @@ class _MyHomePageState extends State<MyHomePage> {
   String _counter = '';
 
   Future<void> _incrementCounter() async {
-    //final String path = await widget._localPath;
     final enteredChars = _charsController.text;
-    widget.writeChars(enteredChars);
-    final String fileContent = await widget.readChars();
+    LocalStorageService().writeChars("chars.txt", enteredChars);
+    final String fileContent =
+        await LocalStorageService().readChars("chars.txt");
     setState(() {
       _counter = fileContent;
     });
