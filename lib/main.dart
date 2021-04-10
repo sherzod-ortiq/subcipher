@@ -13,6 +13,8 @@ class MyApp extends StatelessWidget {
       title: 'Subcipher',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        primaryColor: Colors.blue[700],
+        accentColor: Colors.blue[800],
       ),
       home: MyHomePage(title: 'Subcipher'),
     );
@@ -55,11 +57,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _charsController = TextEditingController();
   String _counter = '';
 
   Future<void> _incrementCounter() async {
     //final String path = await widget._localPath;
-    widget.writeChars("Hello, Sher!");
+    final enteredChars = _charsController.text;
+    widget.writeChars(enteredChars);
     final String fileContent = await widget.readChars();
     setState(() {
       _counter = fileContent;
@@ -72,19 +76,39 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              top: 30,
+              left: 20,
+              right: 20,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Chars',
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    width: 2,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    width: 2,
+                  ),
+                ),
+              ),
+              controller: _charsController,
+              maxLines: 2,
             ),
-          ],
-        ),
+          ),
+          Text(
+            '$_counter',
+            style: Theme.of(context).textTheme.headline4,
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
