@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => GenerateKeyScreen(),
+        '/': (context) => GenerateKeyScreen(title: "Generate key"),
       },
     );
   }

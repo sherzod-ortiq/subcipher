@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../services/local_storage_service.dart';
+import '../helpers/generate_key_helper.dart';
 
 class GenerateKeyScreen extends StatefulWidget {
   final String title;
@@ -12,16 +13,25 @@ class GenerateKeyScreen extends StatefulWidget {
 }
 
 class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
-  final _charsController = TextEditingController();
-  String _counter = '';
+  late final TextEditingController _charsController;
+  late final TextEditingController _keyController;
+  String keys = '';
 
-  Future<void> _incrementCounter() async {
+  @override
+  void initState() {
+    super.initState();
+
+    _charsController = TextEditingController();
+    _keyController = TextEditingController();
+  }
+
+  Future<void> _generateKey() async {
     final enteredChars = _charsController.text;
     LocalStorageService().writeChars("chars.txt", enteredChars);
     final String fileContent =
         await LocalStorageService().readChars("chars.txt");
     setState(() {
-      _counter = fileContent;
+      _keyController.text = GenerateKeyHelper.generateKey(fileContent);
     });
   }
 
@@ -49,7 +59,7 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
               ),
               child: TextField(
                 decoration: InputDecoration(
-                  labelText: 'Chars',
+                  labelText: '',
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Theme.of(context).primaryColor,
@@ -72,7 +82,59 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
               children: [
                 ElevatedButton(
                   child: Text('Save'),
-                  onPressed: _incrementCounter,
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.indigo[800],
+                  ),
+                ),
+                ElevatedButton(
+                  child: Text('Generate key'),
+                  onPressed: _generateKey,
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.indigo[800],
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 50),
+              child: Text(
+                'Encryption key',
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                top: 20,
+                left: 20,
+                right: 20,
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: '',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor,
+                      width: 2,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor,
+                      width: 2,
+                    ),
+                  ),
+                ),
+                controller: _keyController,
+                maxLines: 10,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  child: Text('Save'),
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     primary: Colors.indigo[800],
                   ),
@@ -85,10 +147,6 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
                   ),
                 ),
               ],
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
             ),
           ],
         ),
