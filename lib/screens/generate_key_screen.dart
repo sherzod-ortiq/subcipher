@@ -23,16 +23,34 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
 
     _charsController = TextEditingController();
     _keyController = TextEditingController();
+
+    _initializeChars();
+    _initializeKey();
   }
 
-  Future<void> _generateKey() async {
+  void _generateKey() {
+    final enteredChars = _charsController.text;
+    setState(() {
+      _keyController.text = GenerateKeyHelper.generateKey(enteredChars);
+    });
+  }
+
+  Future<void> _saveChars() async {
     final enteredChars = _charsController.text;
     LocalStorageService().writeChars("chars.txt", enteredChars);
-    final String fileContent =
-        await LocalStorageService().readChars("chars.txt");
-    setState(() {
-      _keyController.text = GenerateKeyHelper.generateKey(fileContent);
-    });
+  }
+
+  Future<void> _saveKey() async {
+    final enteredKey = _keyController.text;
+    LocalStorageService().writeChars("key.txt", enteredKey);
+  }
+
+  Future<void> _initializeChars() async {
+    _charsController.text = await LocalStorageService().readChars("chars.txt");
+  }
+
+  Future<void> _initializeKey() async {
+    _keyController.text = await LocalStorageService().readChars("key.txt");
   }
 
   @override
@@ -82,7 +100,7 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
               children: [
                 ElevatedButton(
                   child: Text('Save'),
-                  onPressed: () {},
+                  onPressed: _saveChars,
                   style: ElevatedButton.styleFrom(
                     primary: Colors.indigo[800],
                   ),
@@ -134,14 +152,7 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
               children: [
                 ElevatedButton(
                   child: Text('Save'),
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.indigo[800],
-                  ),
-                ),
-                ElevatedButton(
-                  child: Text('Generate key'),
-                  onPressed: () {},
+                  onPressed: _saveKey,
                   style: ElevatedButton.styleFrom(
                     primary: Colors.indigo[800],
                   ),

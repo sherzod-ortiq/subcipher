@@ -17,7 +17,7 @@ class LocalStorageService {
 
   Future<File> _localFile(fileName) async {
     final path = await _localPath;
-    return File('$path/fileName');
+    return File('$path/$fileName');
   }
 
   Future<File> writeChars(String fileName, String chars) async {
