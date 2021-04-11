@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../services/local_storage_service.dart';
 import '../helpers/generate_key_helper.dart';
+import '../widgets/save_button.dart';
 
 class GenerateKeyScreen extends StatefulWidget {
   final String title;
@@ -98,13 +99,7 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ElevatedButton(
-                  child: Text('Save'),
-                  onPressed: _saveChars,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.indigo[800],
-                  ),
-                ),
+                SaveButton(_saveChars),
                 ElevatedButton(
                   child: Text('Generate key'),
                   onPressed: _generateKey,
@@ -150,13 +145,7 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                ElevatedButton(
-                  child: Text('Save'),
-                  onPressed: _saveKey,
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.indigo[800],
-                  ),
-                ),
+                SaveButton(_saveKey),
               ],
             ),
           ],
