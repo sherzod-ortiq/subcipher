@@ -32,7 +32,9 @@ class LocalStorageService {
 
       return contents;
     } catch (e) {
-      return 'Error';
+      // There will be file not found error when the first initialization is run
+      // Set file existace check constraint in initialization methods
+      return '';
     }
   }
 }
