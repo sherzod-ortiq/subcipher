@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../services/local_storage_service.dart';
 import '../helpers/generate_key_helper.dart';
 import '../widgets/save_button.dart';
+import '../widgets/main_drawer.dart';
 
 class GenerateKeyScreen extends StatefulWidget {
   final String title;
@@ -60,6 +61,7 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+      drawer: MainDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[

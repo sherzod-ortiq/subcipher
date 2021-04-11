@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './screens/generate_key_screen.dart';
+import './screens/perform_substitution_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => GenerateKeyScreen(title: "Generate key"),
+        PerformSubstitutionScreen.routeName: (context) =>
+            PerformSubstitutionScreen(title: "Perform substitution"),
       },
     );
   }
