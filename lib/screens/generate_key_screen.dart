@@ -30,6 +30,13 @@ class _GenerateKeyScreenState extends State<GenerateKeyScreen> {
     _initializeKey();
   }
 
+  @override
+  void dispose() {
+    _charsController.dispose();
+    _keyController.dispose();
+    super.dispose();
+  }
+
   void _generateKey() {
     final enteredChars = _charsController.text;
     setState(() {

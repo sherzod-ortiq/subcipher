@@ -32,6 +32,13 @@ class _PerformSubstitutionScreenState extends State<PerformSubstitutionScreen> {
     _initializeProcessedText();
   }
 
+  @override
+  void dispose() {
+    _rawTextController.dispose();
+    _processedTextController.dispose();
+    super.dispose();
+  }
+
   // void _generateKey() {
   //   final enteredChars = _rawTextController.text;
   //   setState(() {
