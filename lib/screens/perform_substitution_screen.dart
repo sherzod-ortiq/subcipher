@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../services/local_storage_service.dart';
+import '../helpers/generate_key_helper.dart';
+import '../helpers/encryption_helper.dart';
 import '../widgets/main_drawer.dart';
 import '../widgets/save_button.dart';
 import '../widgets/en_de_crypt_button.dart';
@@ -39,22 +41,25 @@ class _PerformSubstitutionScreenState extends State<PerformSubstitutionScreen> {
     super.dispose();
   }
 
-  // void _generateKey() {
-  //   final enteredChars = _rawTextController.text;
-  //   setState(() {
-  //     _processedTextController.text = GenerateKeyHelper.generateKey(enteredChars);
-  //   });
-  // }
+  Future<void> _encryptText({bool decrypt = false}) async {
+    final String rawKey = await LocalStorageService().readChars("key.txt");
+    final Map<String, String> mapKey =
+        GenerateKeyHelper.getKey(rawKey, decrypt: decrypt);
+    setState(() {
+      _processedTextController.text =
+          EncryptionHelper.encrypt(_rawTextController.text, mapKey);
+    });
+  }
 
   Future<void> _saveRawText() async {
     final rawText = _rawTextController.text;
     LocalStorageService().writeChars("raw_text.txt", rawText);
   }
 
-  // Future<void> _saveKey() async {
-  //   final enteredKey = _processedTextController.text;
-  //   LocalStorageService().writeChars("key.txt", enteredKey);
-  // }
+  Future<void> _saveEncryptText() async {
+    final encryptedText = _processedTextController.text;
+    LocalStorageService().writeChars("encrypted_text.txt", encryptedText);
+  }
 
   Future<void> _initializeRawText() async {
     _rawTextController.text =
@@ -63,7 +68,7 @@ class _PerformSubstitutionScreenState extends State<PerformSubstitutionScreen> {
 
   Future<void> _initializeProcessedText() async {
     _processedTextController.text =
-        await LocalStorageService().readChars("processed_text.txt");
+        await LocalStorageService().readChars("encrypted_text.txt");
   }
 
   @override
@@ -113,8 +118,8 @@ class _PerformSubstitutionScreenState extends State<PerformSubstitutionScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SaveButton(_saveRawText),
-                EnDeCryptButton(() => print('Encrypt'), 'Encrypt'),
-                EnDeCryptButton(() => print('Decrypt'), 'Decrypt'),
+                EnDeCryptButton(_encryptText, 'Encrypt'),
+                EnDeCryptButton(() => _encryptText(decrypt: true), 'Decrypt'),
               ],
             ),
             Container(
@@ -153,7 +158,7 @@ class _PerformSubstitutionScreenState extends State<PerformSubstitutionScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                //SaveButton(_saveKey),
+                SaveButton(_saveEncryptText),
               ],
             ),
           ],
