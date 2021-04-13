@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './screens/generate_key_screen.dart';
 import './screens/perform_substitution_screen.dart';
+import './screens/frequency_analysis_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,6 +30,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => GenerateKeyScreen(title: "Generate key"),
         PerformSubstitutionScreen.routeName: (context) =>
             PerformSubstitutionScreen(title: "Perform substitution"),
+        FrequencyAnalysisScreen.routeName: (context) =>
+            FrequencyAnalysisScreen(title: "Frequency analysis"),
       },
     );
   }

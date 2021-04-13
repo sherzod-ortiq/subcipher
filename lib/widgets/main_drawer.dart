@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/perform_substitution_screen.dart';
+import '../screens/frequency_analysis_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -42,6 +43,21 @@ class MainDrawer extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Perform substitution',
+                style: Theme.of(context).textTheme.headline1,
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(FrequencyAnalysisScreen.routeName);
+            },
+            child: Container(
+              padding: EdgeInsets.only(left: 20),
+              height: 50,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Analyze frequency',
                 style: Theme.of(context).textTheme.headline1,
               ),
             ),
